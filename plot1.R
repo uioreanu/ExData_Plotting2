@@ -11,7 +11,7 @@
 # cleanup
 rm(list=ls())
 gc()
-setwd('D:/data_R/exdata-030/Course Project 2/')
+#setwd('D:/data_R/exdata-030/Course Project 2/')
 
 # check with dir() to see if the right downloaded files are present
 if (sum(c("summarySCC_PM25.rds", "Source_Classification_Code.rds") %in% dir())<2) {
@@ -32,14 +32,15 @@ SCC <- readRDS("Source_Classification_Code.rds")
 totalEmissions = aggregate(Emissions~year, NEI, FUN=sum)
 
 #Open device
-png(filename="plot1.png", width = 480, height = 480)
+png(filename="plot1.png", width = 600, height = 600)
 
 # plot it
 plot(totalEmissions, 
-     type="p", col="red", xlab="Year",
-     ylab="PM2.5 Emmisions between 1999 - 2008")
+     type="p", col="red", xlab="Year",ylim=c(0,8*1000^2),
+     ylab="PM2.5 Emmisions in Tons")
 lines(totalEmissions, pch=22, lwd=5, col="red")
 title(main="Total PM2.5 emission from all sources")
+text(totalEmissions, labels=round(totalEmissions$Emissions/1000^2,1), cex= 1, pos=3)
 
 # closing device
 dev.off()
