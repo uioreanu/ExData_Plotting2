@@ -11,7 +11,7 @@
 # cleanup
 rm(list=ls())
 gc()
-#setwd('D:/data_R/exdata-030/Course Project 2/')
+if (getwd()=='C:/Users/calin/Documents') setwd('D:/data_R/exdata-030/Course Project 2/ExData_Plotting2/')
 
 # check with dir() to see if the right downloaded files are present
 if (sum(c("summarySCC_PM25.rds", "Source_Classification_Code.rds") %in% dir())<2) {
@@ -28,19 +28,23 @@ SCC <- readRDS("Source_Classification_Code.rds")
 
 # Have total emissions from PM2.5 decreased in the United States from 1999 to 2008? Using the base plotting system, make a plot showing the total PM2.5 emission from all sources for each of the years 1999, 2002, 2005, and 2008.
 
+# Answer: in the graph below
+
 # prepare data
 totalEmissions = aggregate(Emissions~year, NEI, FUN=sum)
+
+totalEmissions$Emissions = round(totalEmissions$Emissions/1000^2,2)
 
 #Open device
 png(filename="plot1.png", width = 600, height = 600)
 
-# plot it
+# plot data
 plot(totalEmissions, 
-     type="p", col="red", xlab="Year",ylim=c(0,8*1000^2),
-     ylab="PM2.5 Emmisions in Tons")
-lines(totalEmissions, pch=22, lwd=5, col="red")
-title(main="Total PM2.5 emission from all sources")
-text(totalEmissions, labels=round(totalEmissions$Emissions/1000^2,1), cex= 1, pos=3)
+     type="p", col="red", xlab="Year (1999 - 2008)",ylim=c(0,8),
+     ylab="PM2.5 Emmisions in Millions of Tons")
+lines(totalEmissions, pch=22, lwd=10, col="red")
+title(main="Emissions of PM2.5 in the United States have decreased around 50%")
+text(totalEmissions, labels=round(totalEmissions$Emissions,1), cex= 1, pos=3)
 
 # closing device
 dev.off()
